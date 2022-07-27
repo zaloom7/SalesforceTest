@@ -20,9 +20,10 @@ class Test_003:
 
     # pas = base64.b64decode(b'emFsb29tQDc3').decode('utf-8')
 
-    pas = base64.b64decode(b'emFsb29tQDc3Nw==').decode('utf-8')
+    pas = base64.b64decode(b'emFsb29tQDc=').decode('utf-8')
     logger = LogGen.loggen()
 
+    @pytest.mark.regression
     def test_record(self, setup):
         self.logger.info("*************** Test_001_Login *****************")
         self.logger.info("****Started Home page title test ****")

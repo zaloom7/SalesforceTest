@@ -21,7 +21,8 @@ class Test_001_Login:
     #     for method, error in self._outcome.errors:
     #         if error:
     #             self.driver.get_screenshot_as_file("Screenshots" + self.id() + ".png")
-
+    @pytest.mark.sanity
+    @pytest.mark.regression
     def test_login(self, setup):
 
         self.logger.info("*************** Test_001_Login *****************")
@@ -31,8 +32,8 @@ class Test_001_Login:
         self.lp = Login(self.driver)
 
         path = "C:\\selenium browser drivers\\login.xlsx"
-        workbook = openpyxl.load_workbook(path)
-        sheet = workbook.get_sheet_by_name("Sheet1")
+        wb = openpyxl.load_workbook(path)
+        sheet = wb["Sheet1"]
         rows = sheet.max_row
         # cols = sheet.max_coloumn
 
@@ -54,6 +55,7 @@ class Test_001_Login:
             else:
                 self.logger.error("**** Home page title test failed****")
                 self.driver.save_screenshot(".\\Screenshots\\" + "test_login.png")
+                self.driver.close()
                 time.sleep(2)
                 assert False
         self.logger.info("**************** Completed  test_login ************* ")

@@ -15,9 +15,16 @@ class Record:
     App_Launcher = "//div[@class='slds-icon-waffle']"
     App_search = "//input[@placeholder='Search apps and items...']"
     App_click = "//a[@data-label='{}']"
-
+    new_Button = "//a[@title='New']"
     select_AllRecords = "//span[contains(.,'All {}')]"
     pin_List = "//button[@title='Pin this list view']"
+    lastname_textbox = "//input[@name='lastName']"
+    enter_values = "//input[@id=//label[text()='{}']/@for]"
+    clear_Lookup = "//button[@title='Clear Selection']"
+    search_Lookup = "//input[@placeholder='Search {}...']"
+    add_Lookup = "//li/lightning-base-combobox-item"
+    click_Picklist = "//button[@id=//label[text()='{}']/@for]"
+    select_Picklist = "//lightning-base-combobox-item[contains(.,'{}')]"
 
     def __init__(self, driver):
         self.driver = driver
@@ -49,7 +56,7 @@ class Record:
 
     def clickNew(self):
         self.driver.execute_script('arguments[0].click();',
-                                   self.driver.find_element(by=By.XPATH, value="//a[@title='New']"))
+                                   self.driver.find_element(by=By.XPATH, value=self.new_Button))
 
     def closeContact(self):
         self.driver.find_element(by=By.XPATH, value="//button[@name='CancelEdit']").click()
@@ -59,45 +66,44 @@ class Record:
     #                                driver.find_element(by=By.XPATH, value="//a[@title='New Contact']"))
 
     def lastName(self, lastname):
-        self.driver.find_element(by=By.XPATH, value="//input[@name='lastName']").clear()
+        self.driver.find_element(by=By.XPATH, value=self.lastname_textbox).clear()
         time.sleep(2)
-        self.driver.find_element(by=By.XPATH, value="//input[@name='lastName']").send_keys(lastname)
+        self.driver.find_element(by=By.XPATH, value=self.lastname_textbox).send_keys(lastname)
 
     def enterValues(self, fieldname, value):
         time.sleep(2)
         self.driver.implicitly_wait(10)
         # self.driver.find_element(by=By.XPATH, value="//input[@id=//label[text()='{}']/@for]".format(y)).send_keys(val)
         self.driver.find_element(by=By.XPATH,
-                                 value="//input[@id=//label[text()='{}']/@for]".format(fieldname)).clear()
+                                 value=self.enter_values.format(fieldname)).clear()
         time.sleep(2)
         self.driver.find_element(by=By.XPATH,
-                                 value="//input[@id=//label[text()='{}']/@for]".format(fieldname)).send_keys(
-            value)
+                                 value=self.enter_values.format(fieldname)).send_keys(value)
         time.sleep(2)
 
     def selectLookup(self, lookup, value):
         try:
             time.sleep(2)
             self.driver.find_element(by=By.XPATH,
-                                     value="//button[@title='Clear Selection']").click()
+                                     value=self.clear_Lookup).click()
         except NoSuchElementException:
             pass
         self.driver.find_element(by=By.XPATH,
-                                 value="//input[@placeholder='Search {}...']".format(lookup)).send_keys(value)
+                                 value=self.search_Lookup.format(lookup)).send_keys(value)
         time.sleep(2)
         self.driver.implicitly_wait(4)
         self.driver.execute_script('arguments[0].click();',
-                                   self.driver.find_element(by=By.XPATH, value="//li/lightning-base-combobox-item"))
+                                   self.driver.find_element(by=By.XPATH, value=self.add_Lookup))
 
         time.sleep(1)
 
     def selectPicklist(self, fieldname, val):
         self.driver.execute_script('arguments[0].click();', self.driver.find_element(by=By.XPATH,
-                                                                                     value="//button[@id=//label[text()='{}']/@for]".format(
+                                                                                     value=self.click_Picklist.format(
                                                                                          fieldname)))
         time.sleep(1)
         self.driver.execute_script('arguments[0].click();', self.driver.find_element(by=By.XPATH,
-                                                                                     value="//lightning-base-combobox-item[contains(.,'{}')]".format(
+                                                                                     value=self.select_Picklist.format(
                                                                                          val)))
         time.sleep(2)
 
